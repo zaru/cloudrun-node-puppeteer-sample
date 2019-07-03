@@ -28,6 +28,17 @@
     // res.sendFile('/tmp/hoge.png');
   });
 
+  app.get('/noco', async (req, res) => {
+    const page = await browser.newPage();
+    await page.goto('https://noco.fun/ogp_render/b/t1Vu8I15FvKZpP6REzKj/e/ArHvhis7pI2JV3Ovv6Mt/', {
+      waitUntil: 'networkidle0'
+    });
+    const file = await page.screenshot({encoding: 'binary'});
+    res.setHeader('Cache-Control', 'public, max-age=0');
+    res.type('png');
+    res.send(file);
+  });
+
   const port = process.env.PORT || 8080;
   app.listen(port, () => {
     console.log('Hello world listening on port', port);
