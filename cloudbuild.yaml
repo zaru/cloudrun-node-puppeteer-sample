@@ -1,0 +1,5 @@
+steps:
+- name: 'gcr.io/kaniko-project/executor:latest'
+  args:
+  - --destination=gcr.io/cloudrun-sample-245604/cloudrun-sample-node:latest
+  - --cache=true
