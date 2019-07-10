@@ -9,14 +9,14 @@ RUN apt-get update && apt -y install  curl \
                                       git \
                                       vim \
                                       nodejs \
-                                      npm \
-                                      clang \
-                                      make \
-                                      gcc \
-                                      g++ \
-                                      pkg-config \
-                                      libpulse-dev \
-                                      rustc
+                                      npm
+                                      # clang \
+                                      # make \
+                                      # gcc \
+                                      # g++ \
+                                      # pkg-config \
+                                      # libpulse-dev \
+                                      # rustc
 
 # TODO: cbindgen がインストールできない
 
@@ -35,43 +35,43 @@ ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_a
 RUN chmod +x /usr/local/bin/dumb-init
 
 # Install Firefox
-# RUN apt-get update && apt -y install  libcanberra-gtk-module \
-#                                       libcanberra-gtk3-module \
-#                                       language-pack-ja \
-#                                       fonts-noto \
-#                                       fonts-noto-cjk \
-#                                       fonts-noto-color-emoji \
-#                                       pulseaudio
-# RUN apt-get update && apt-get install -y software-properties-common
-# RUN add-apt-repository -y ppa:mozillateam/firefox-next
-# RUN apt-get update && apt-get install -y firefox \
-#     && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt -y install  libcanberra-gtk-module \
+                                      libcanberra-gtk3-module \
+                                      language-pack-ja \
+                                      fonts-noto \
+                                      fonts-noto-cjk \
+                                      fonts-noto-color-emoji \
+                                      pulseaudio
+RUN apt-get update && apt-get install -y software-properties-common
+RUN add-apt-repository -y ppa:mozillateam/firefox-next
+RUN apt-get update && apt-get install -y firefox \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install customize Firefox for puppeteer
-RUN git clone --depth 1 https://github.com/Puppeteer/juggler
+# RUN git clone --depth 1 https://github.com/Puppeteer/juggler
 # RUN cd juggler && \
 #     ./mach bootstrap --application-choice=browser --no-interactive && \
 #     ./mach build
 
-# # Install nodejs
-# RUN npm install n -g
-# RUN n stable
-# RUN apt purge -y nodejs npm
+# Install nodejs
+RUN npm install n -g
+RUN n stable
+RUN apt purge -y nodejs npm
 
-# # Install font
-# RUN apt-get update && apt -y install  language-pack-ja \
-#                                       fonts-noto \
-#                                       fonts-noto-cjk \
-#                                       fonts-noto-color-emoji \
-#                                       fonts-ipafont-gothic \
-#                                       fonts-wqy-zenhei \
-#                                       fonts-thai-tlwg \
-#                                       fonts-kacst
+# Install font
+RUN apt-get update && apt -y install  language-pack-ja \
+                                      fonts-noto \
+                                      fonts-noto-cjk \
+                                      fonts-noto-color-emoji \
+                                      fonts-ipafont-gothic \
+                                      fonts-wqy-zenhei \
+                                      fonts-thai-tlwg \
+                                      fonts-kacst
 
-# COPY package*.json ./
+COPY package*.json ./
 
-# RUN npm install
+RUN npm install
 
-# COPY . .
+COPY . .
 
-# CMD [ "npm", "start" ]
+CMD [ "npm", "start" ]
