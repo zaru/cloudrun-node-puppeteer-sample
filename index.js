@@ -5,6 +5,14 @@
   const foxr = require('foxr').default;
   const sleep = (timeout) => new Promise((resolve) => setTimeout(resolve, timeout))
 
+  const chrome = await puppeteer.launch({
+    headless: true,
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox'
+    ]
+  });
+
   const {Storage} = require('@google-cloud/storage');
 
   app.get('/', (req, res) => {
@@ -29,14 +37,7 @@
   });
 
   app.get('/chrome', async (req, res) => {
-    const browser = await puppeteer.launch({
-      headless: true,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox'
-      ]
-    });
-    const page = await browser.newPage();
+    const page = await chrome.newPage();
     await page.goto('https://example.com');
     const file = await page.screenshot({encoding: 'binary'});
     res.setHeader('Cache-Control', 'public, max-age=0');
@@ -57,6 +58,15 @@
     } catch(error) {
       console.log(error)
     }
+  });
+
+  app.get('/chrome_noco', async (req, res) => {
+    const page = await chrome.newPage();
+    await page.goto('https://noco.fun/ogp_render/b/t1Vu8I15FvKZpP6REzKj/e/ArHvhis7pI2JV3Ovv6Mt/');
+    const file = await page.screenshot({encoding: 'binary'});
+    res.setHeader('Cache-Control', 'public, max-age=0');
+    res.type('png');
+    res.send(file);
   });
 
   const port = process.env.PORT || 8080;
