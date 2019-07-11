@@ -62,7 +62,10 @@
 
   app.get('/chrome_noco', async (req, res) => {
     const page = await chrome.newPage();
-    await page.goto('https://noco.fun/ogp_render/b/t1Vu8I15FvKZpP6REzKj/e/ArHvhis7pI2JV3Ovv6Mt/');
+    await page.goto('https://noco.fun/ogp_render/b/t1Vu8I15FvKZpP6REzKj/e/ArHvhis7pI2JV3Ovv6Mt/', {
+      waitUntil: 'networkidle2'
+    });
+    // await page.waitForNavigation({ waitUntil: 'domcontentloaded' })
     const file = await page.screenshot({encoding: 'binary'});
     res.setHeader('Cache-Control', 'public, max-age=0');
     res.type('png');

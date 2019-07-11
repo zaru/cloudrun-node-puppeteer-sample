@@ -10,6 +10,7 @@ RUN apt-get update && apt -y install  curl \
                                       vim \
                                       nodejs \
                                       npm
+                                      # unzip \
                                       # clang \
                                       # make \
                                       # gcc \
@@ -58,12 +59,21 @@ RUN apt purge -y nodejs npm
 RUN apt-get update && apt -y install  language-pack-ja \
                                       fonts-noto \
                                       fonts-noto-cjk \
-                                      fonts-noto-color-emoji \
+#                                       fonts-noto-color-emoji \
                                       fonts-ipafont-gothic \
-                                      fonts-wqy-zenhei \
-                                      fonts-thai-tlwg \
-                                      fonts-kacst \
-                                      ttf-freefont
+                                      unzip
+#                                       fonts-wqy-zenhei \
+#                                       fonts-thai-tlwg \
+#                                       fonts-kacst
+                                      # ttf-freefont
+
+RUN cd /tmp && \
+    wget https://fonts.google.com/download?family=Noto%20Serif%20JP -O notoserif.zip &&\
+    unzip notoserif.zip && \
+    mkdir -p /usr/share/fonts/opentype/noto && \
+    cp *otf /usr/share/fonts/opentype/noto && \
+    fc-cache -f -v
+
 COPY package*.json ./
 
 RUN npm install
